@@ -47,13 +47,48 @@ function GameArea() {
                 <p>i just farteddd</p>
               </Tab>
               <Tab eventKey="inventory" title="Inventory">
-                <p>sketti yeuh yuhhhh</p>
+                <PlayerInventory />
               </Tab>
             </Tabs>
           </Container>
         </Row>
       </Container>
     </Col>
+  )
+}
+
+function PlayerInventory() {
+  return (
+    <div>
+      <Row style={{ color: 'gray', textAlign: 'center' }}>
+        <Col>ITEMS: 0</Col>
+        <Col>WEIGHT: 0/40</Col>
+        <Col>CAPACITY: 0/20</Col>
+      </Row>
+      <div style={{ color: 'white' }}>
+        <Row>
+          <Col>Image</Col>
+          <Col md="4">Name</Col>
+          <Col>Type</Col>
+          <Col>Weight</Col>
+          <Col>Size</Col>
+        </Row>
+        <Row>
+          <Col>no image</Col>
+          <Col md="4">Catch the Rainbow</Col>
+          <Col>CD</Col>
+          <Col>0.1</Col>
+          <Col>1</Col>
+        </Row>
+        <Row>
+          <Col>no image</Col>
+          <Col md="4">Catch the Rainbow</Col>
+          <Col>CD</Col>
+          <Col>0.1</Col>
+          <Col>1</Col>
+        </Row>
+      </div>
+    </div>
   )
 }
 

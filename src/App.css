@@ -21,3 +21,8 @@
   border-style: solid;
   border-color: #465e86ff;
 }
+
+.table:nth-child(even) {
+  color: white;
+  background-color: #223249ff;
+}
