@@ -2,7 +2,7 @@ import './App.css';
 import { Container, Row, Col, Tabs, Tab } from 'react-bootstrap'
 import { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
-import Game from './Game';
+import GameArea from './Game';
 
 function PlayerPanel() {
   return (
@@ -48,29 +48,6 @@ function ViewPanel() {
         </Tabs>
       </Container>
     </Row>
-  )
-}
-
-function GameArea(props) {
-  const gameMessages = props.messages.map((message) => {
-    return (
-      <p className='message'>
-        {message}
-      </p>
-    )
-  })
-
-  return (
-    <Col style={{ padding: '0px' }}>
-      <Container>
-        <Row id="maingame" className='mainpanel'>
-          <Col>
-            {gameMessages}
-          </Col>
-        </Row>
-        <ViewPanel />
-      </Container>
-    </Col>
   )
 }
 
@@ -124,11 +101,9 @@ class App extends Component {
     ]
   }
 
-  printToGame = (message) => {
+  printMessage(newMessage) {
     const { messages } = this.state
-    this.setState({
-      messages: message
-    })
+    this.setState({ messages: [...messages, newMessage] })
   }
 
   render() {
@@ -139,14 +114,16 @@ class App extends Component {
         <Container fluid className='page'>
           <Row>
             <PlayerPanel />
-            <GameArea messages={messages} />
+            <GameArea print={this.printMessage} messages={messages} />
             <InfoPanel />
           </Row>
         </Container>
-        <Game print={this.printToGame} />
       </div>
     )
   }
 }
 
-export default App;
+export default (
+  App,
+  ViewPanel
+);
