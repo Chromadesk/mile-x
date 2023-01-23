@@ -2,6 +2,7 @@ import './App.css';
 import { Container, Row, Col, Tabs, Tab } from 'react-bootstrap'
 import { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
+import Game from './Game';
 
 function PlayerPanel() {
   return (
@@ -33,25 +34,41 @@ function PlayerPanel() {
   )
 }
 
-function GameArea() {
+function ViewPanel() {
+  return (
+    <Row id="viewpanel" className='viewpanel'>
+      <Container>
+        <Tabs defaultActiveKey="profile">
+          <Tab eventKey="profile" title="Profile">
+            <p>i just farteddd</p>
+          </Tab>
+          <Tab eventKey="inventory" title="Inventory">
+            <PlayerInventory />
+          </Tab>
+        </Tabs>
+      </Container>
+    </Row>
+  )
+}
+
+function GameArea(props) {
+  const gameMessages = props.messages.map((message) => {
+    return (
+      <p className='message'>
+        {message}
+      </p>
+    )
+  })
+
   return (
     <Col style={{ padding: '0px' }}>
       <Container>
         <Row id="maingame" className='mainpanel'>
-          maingame
+          <Col>
+            {gameMessages}
+          </Col>
         </Row>
-        <Row id="viewpanel" className='viewpanel'>
-          <Container>
-            <Tabs defaultActiveKey="profile">
-              <Tab eventKey="profile" title="Profile">
-                <p>i just farteddd</p>
-              </Tab>
-              <Tab eventKey="inventory" title="Inventory">
-                <PlayerInventory />
-              </Tab>
-            </Tabs>
-          </Container>
-        </Row>
+        <ViewPanel />
       </Container>
     </Col>
   )
@@ -101,18 +118,33 @@ function InfoPanel() {
 }
 
 class App extends Component {
+  state = {
+    messages: [
+      "Hello",
+    ]
+  }
+
+  printToGame = (message) => {
+    const { messages } = this.state
+    this.setState({
+      messages: message
+    })
+  }
+
   render() {
+    const { messages } = this.state
 
     return (
       <div>
         <Container fluid className='page'>
           <Row>
             <PlayerPanel />
-            <GameArea />
+            <GameArea messages={messages} />
             <InfoPanel />
           </Row>
         </Container>
-      </div >
+        <Game print={this.printToGame} />
+      </div>
     )
   }
 }
