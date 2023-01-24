@@ -1,8 +1,13 @@
 import { Container, Row, Col } from 'react-bootstrap'
-import ViewPanel from './App'
+import { ViewPanel } from './App'
 
 function GameArea(props) {
-    const gameMessages = props.messages.map((message) => {
+    /*messageLog contains all the messages to the game area.
+    Simply push new messages into it and they will be displayed.*/
+    const messageLog = props.messages
+    messageLog.length = 0
+
+    const displayedMessages = messageLog.map((message) => {
         return (
             <p className='message'>
                 {message}
@@ -10,14 +15,13 @@ function GameArea(props) {
         )
     })
 
-    const print = props.print
 
     return (
         <Col style={{ padding: '0px' }}>
             <Container>
                 <Row id="maingame" className='mainpanel'>
                     <Col>
-                        {gameMessages}
+                        {displayedMessages}
                     </Col>
                 </Row>
                 <ViewPanel />

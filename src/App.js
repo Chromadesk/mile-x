@@ -34,13 +34,13 @@ function PlayerPanel() {
   )
 }
 
-function ViewPanel() {
+export function ViewPanel() {
   return (
     <Row id="viewpanel" className='viewpanel'>
       <Container>
         <Tabs defaultActiveKey="profile">
           <Tab eventKey="profile" title="Profile">
-            <p>i just farteddd</p>
+            <p>i forgot to remove what used to be here before i publicly commited. oh no.</p>
           </Tab>
           <Tab eventKey="inventory" title="Inventory">
             <PlayerInventory />
@@ -97,13 +97,8 @@ function InfoPanel() {
 class App extends Component {
   state = {
     messages: [
-      "Hello",
+      "hello"
     ]
-  }
-
-  printMessage(newMessage) {
-    const { messages } = this.state
-    this.setState({ messages: [...messages, newMessage] })
   }
 
   render() {
@@ -114,7 +109,7 @@ class App extends Component {
         <Container fluid className='page'>
           <Row>
             <PlayerPanel />
-            <GameArea print={this.printMessage} messages={messages} />
+            <GameArea messages={messages} />
             <InfoPanel />
           </Row>
         </Container>
@@ -123,7 +118,4 @@ class App extends Component {
   }
 }
 
-export default (
-  App,
-  ViewPanel
-);
+export default App
