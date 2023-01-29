@@ -96,9 +96,12 @@ function InfoPanel() {
 
 class App extends Component {
   state = {
-    messages: [
-      "hello"
-    ]
+    messages: []
+  }
+
+  overwriteMessages = (newMessage) => {
+    const { messages } = this.state
+    this.setState({ messages: [...messages, newMessage] })
   }
 
   render() {
@@ -109,7 +112,7 @@ class App extends Component {
         <Container fluid className='page'>
           <Row>
             <PlayerPanel />
-            <GameArea messages={messages} />
+            <GameArea overwriteMessages={this.overwriteMessages} messages={messages} />
             <InfoPanel />
           </Row>
         </Container>

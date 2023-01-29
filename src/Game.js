@@ -6,7 +6,7 @@ function GameArea(props) {
     /*messageLog contains all the messages to the game area.
     Simply push new messages into it and they will be displayed.*/
     const messageLog = props.messages
-    messageLog.length = 0
+    const overwriteMessages = props.overwriteMessages
 
     function eventHandler(event, vars) {
         let endEvent = false;
@@ -22,7 +22,7 @@ function GameArea(props) {
                 )
             }
             )
-            messageLog.push(
+            return (
                 <div>
                     <p>{result.text}</p>
                     <div>
@@ -31,7 +31,7 @@ function GameArea(props) {
                 </div>
             )
         } else {
-            messageLog.push(
+            return (
                 <div>
                     <p>{result.text}</p>
                 </div>
@@ -39,11 +39,13 @@ function GameArea(props) {
         }
     }
 
-    eventHandler(events[0])
+    componentDidMount() {
+        eventHandler(events[0])
+    }
 
-    const displayedMessages = messageLog.map((message) => {
+    const displayedMessages = messageLog.map((message, i) => {
         return (
-            <div>
+            <div key={i}>
                 {message}
             </div>
         )
