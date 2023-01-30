@@ -5,16 +5,21 @@ import events from './Events'
 function GameArea(props) {
     /*messageLog contains all the messages to the game area.
     Simply push new messages into it and they will be displayed.*/
-    const messageLog = props.messages
-    const overwriteMessages = props.overwriteMessages
+    let overwriteMessages = props.overwriteMessages
+
+    let displayedMessages = props.messages.map((message, i) => {
+        return (
+            <div key={i} className="message">
+                {message}
+            </div>
+        )
+    })
 
     function eventHandler(event, vars) {
         let endEvent = false;
         let result = event.play(vars)
-        console.log(result)
 
         if (result.endEvent) endEvent = true;
-        console.log(result.buttons)
         if (result.buttons !== null) {
             let buttonContent = result.buttons.map((text, i) => {
                 return (
@@ -22,7 +27,7 @@ function GameArea(props) {
                 )
             }
             )
-            return (
+            overwriteMessages(
                 <div>
                     <p>{result.text}</p>
                     <div>
@@ -31,7 +36,7 @@ function GameArea(props) {
                 </div>
             )
         } else {
-            return (
+            overwriteMessages(
                 <div>
                     <p>{result.text}</p>
                 </div>
@@ -39,23 +44,14 @@ function GameArea(props) {
         }
     }
 
-    componentDidMount() {
-        eventHandler(events[0])
-    }
-
-    const displayedMessages = messageLog.map((message, i) => {
-        return (
-            <div key={i}>
-                {message}
-            </div>
-        )
-    })
-
     return (
         <Col style={{ padding: '0px' }}>
             <Container>
                 <Row id="maingame" className='mainpanel'>
                     <Col>
+                        <div className='message'>
+                            <button onClick={() => { eventHandler(events[0]) }}>Begin</button>
+                        </div>
                         {displayedMessages}
                     </Col>
                 </Row>

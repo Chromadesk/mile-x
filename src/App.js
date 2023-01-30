@@ -99,9 +99,12 @@ class App extends Component {
     messages: []
   }
 
+  //oh my god it works. it works. it now works. after 5 million years it works. i cant believe this. It Works.
   overwriteMessages = (newMessage) => {
     const { messages } = this.state
-    this.setState({ messages: [...messages, newMessage] })
+    let newState = messages.concat(newMessage)
+    this.setState({ messages: [newState] })
+    console.log(messages)
   }
 
   render() {
