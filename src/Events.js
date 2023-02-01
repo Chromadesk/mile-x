@@ -10,30 +10,61 @@ const events = [
         name: "Button Test",
         unique: true,
         play: (vars) => {
-            if (vars == null) {
-                return ({
-                    text: "Choose A or B",
-                    buttons: ["Pick A", "Pick B"],
-                    endEvent: false
-                })
-            } else {
-                if (vars === 0) {
+            switch (vars) {
+                default:
+                    return ({
+                        text: "Choose A or B",
+                        buttons: ["Option A", "Option B"],
+                        endEvent: false
+                    })
+                case 0:
                     return ({
                         text: "You have chosen A",
                         buttons: null,
                         endEvent: true
                     })
-                }
-                if (vars === 1) {
+                case 1:
                     return ({
                         text: "You have chosen B",
                         buttons: null,
                         endEvent: true
                     })
-                }
             }
         }
-    }
+    },
+    {
+        id: "buttontest2",
+        name: "Button Test 2",
+        unique: true,
+        play: (vars) => {
+            switch (vars) {
+                default:
+                    return ({
+                        text: "Confirm that you see this prompt.",
+                        buttons: ["I see it", "I cannot see the prompt", "No"],
+                        endEvent: false
+                    })
+                case 0:
+                    return ({
+                        text: "Great",
+                        buttons: null,
+                        endEvent: true
+                    })
+                case 1:
+                    return ({
+                        text: "skill issue",
+                        buttons: null,
+                        endEvent: true
+                    })
+                case 2:
+                    return ({
+                        text: "Ok",
+                        buttons: null,
+                        endEvent: true
+                    })
+            }
+        }
+    },
 ]
 
 export default events

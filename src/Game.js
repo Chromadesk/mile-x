@@ -5,7 +5,9 @@ import events from './Events'
 function GameArea(props) {
     /*messageLog contains all the messages to the game area.
     Simply push new messages into it and they will be displayed.*/
-    let overwriteMessages = props.overwriteMessages
+    let setMessages = props.setMessages
+    let setCurrentEvent = props.setCurrentEvent
+
 
     let displayedMessages = props.messages.map((message, i) => {
         return (
@@ -16,6 +18,9 @@ function GameArea(props) {
     })
 
     function eventHandler(event, vars) {
+        //Set the current event in the state to the parameter event.
+        setCurrentEvent(event)
+
         //Disable all pre-existing buttons
         let oldButtons = document.getElementsByClassName("button")
         console.log(oldButtons)
@@ -24,10 +29,9 @@ function GameArea(props) {
             oldButton.className = "disabled button btn btn-outline-primary"
         }
 
-        let endEvent = false;
+        //Use the event's .play function and format the returned object.
         let result = event.play(vars)
 
-        if (result.endEvent) endEvent = true;
         if (result.buttons !== null) {
             let buttonContent = result.buttons.map((text, i) => {
                 return (
@@ -35,7 +39,7 @@ function GameArea(props) {
                 )
             }
             )
-            overwriteMessages(
+            setMessages(
                 <div>
                     <p>{result.text}</p>
                     <ButtonGroup>
@@ -44,12 +48,13 @@ function GameArea(props) {
                 </div>
             )
         } else {
-            overwriteMessages(
+            setMessages(
                 <div>
                     <p>{result.text}</p>
                 </div>
             )
         }
+        if (result.endEvent) setCurrentEvent(null)
     }
 
     return (

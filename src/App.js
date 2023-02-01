@@ -96,14 +96,19 @@ function InfoPanel() {
 
 class App extends Component {
   state = {
-    messages: []
+    messages: [],
+    currentEvent: null
   }
 
   //oh my god it works. it works. it now works. after 5 million years it works. i cant believe this. It Works.
-  overwriteMessages = (newMessage) => {
+  setMessages = (newMessage) => {
     const { messages } = this.state
     let newState = messages.concat(newMessage)
     this.setState({ messages: [newState] })
+  }
+
+  setCurrentEvent = (newEvent) => {
+    this.setState({ currentEvent: newEvent })
   }
 
   render() {
@@ -114,7 +119,7 @@ class App extends Component {
         <Container fluid className='page'>
           <Row>
             <PlayerPanel />
-            <GameArea overwriteMessages={this.overwriteMessages} messages={messages} />
+            <GameArea setCurrentEvent={this.setCurrentEvent} setMessages={this.setMessages} messages={messages} />
             <InfoPanel />
           </Row>
         </Container>
