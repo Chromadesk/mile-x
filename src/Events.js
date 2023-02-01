@@ -1,12 +1,12 @@
 const events = [
     {
         /**
-         * id: lowercase title of event
+         * id: Not to be included, will be automatically set.
          * name: Human-read name of event
          * unique: Boolean to decide if event occurs repeatedly or not
          * play: Function(vars), what the event actually does. Runs repeatedly until returns "endEvent" as true.
          */
-        id: "buttontest",
+        id: -1,
         name: "Button Test",
         unique: true,
         play: (vars) => {
@@ -33,7 +33,7 @@ const events = [
         }
     },
     {
-        id: "buttontest2",
+        id: -1,
         name: "Button Test 2",
         unique: true,
         play: (vars) => {
@@ -67,4 +67,11 @@ const events = [
     },
 ]
 
-export default events
+function getEvents() {
+    return events.map((event, i) => {
+        event.id = i
+        return event
+    })
+}
+
+export default getEvents

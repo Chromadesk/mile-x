@@ -111,6 +111,10 @@ class App extends Component {
     this.setState({ currentEvent: newEvent })
   }
 
+  getCurrentEvent = () => {
+    return this.state.currentEvent
+  }
+
   render() {
     const { messages } = this.state
 
@@ -119,7 +123,7 @@ class App extends Component {
         <Container fluid className='page'>
           <Row>
             <PlayerPanel />
-            <GameArea setCurrentEvent={this.setCurrentEvent} setMessages={this.setMessages} messages={messages} />
+            <GameArea getCurrentEvent={this.getCurrentEvent} setCurrentEvent={this.setCurrentEvent} setMessages={this.setMessages} messages={messages} />
             <InfoPanel />
           </Row>
         </Container>

@@ -1,12 +1,13 @@
 import { Container, Row, Col, Button, ButtonGroup } from 'react-bootstrap'
 import { ViewPanel } from './App'
-import events from './Events'
+import getEvents from './Events'
 
 function GameArea(props) {
-    /*messageLog contains all the messages to the game area.
-    Simply push new messages into it and they will be displayed.*/
+    //Get all of the props functions and set them as variables.
     let setMessages = props.setMessages
     let setCurrentEvent = props.setCurrentEvent
+    let getCurrentEvent = props.getCurrentEvent
+    let events = getEvents()
 
 
     let displayedMessages = props.messages.map((message, i) => {
@@ -17,31 +18,34 @@ function GameArea(props) {
         )
     })
 
-    function eventHandler(event, vars) {
+    /**
+     * Takes in an event and continually runs itself to process an event until the event is over.
+     * @param {Object} event An event to be played
+     * @param {Array} vars Not required. The variables of the event.
+     */
+    function handleEvent(event, vars) {
         //Set the current event in the state to the parameter event.
         setCurrentEvent(event)
 
         //Disable all pre-existing buttons
         let oldButtons = document.getElementsByClassName("button")
-        console.log(oldButtons)
         for (let oldButton of oldButtons) {
-            console.log(oldButton)
             oldButton.className = "disabled button btn btn-outline-primary"
         }
 
         //Use the event's .play function and format the returned object.
-        let result = event.play(vars)
+        let playResult = event.play(vars)
 
-        if (result.buttons !== null) {
-            let buttonContent = result.buttons.map((text, i) => {
+        if (playResult.buttons !== null) {
+            let buttonContent = playResult.buttons.map((text, i) => {
                 return (
-                    <Button className='button' variant="outline-primary" key={i} onClick={() => { eventHandler(event, i) }}>{text}</Button>
+                    <Button className='button' variant="outline-primary" key={i} onClick={() => { handleEvent(event, i) }}>{text}</Button>
                 )
             }
             )
             setMessages(
                 <div>
-                    <p>{result.text}</p>
+                    <p>{playResult.text}</p>
                     <ButtonGroup>
                         {buttonContent}
                     </ButtonGroup>
@@ -50,11 +54,42 @@ function GameArea(props) {
         } else {
             setMessages(
                 <div>
-                    <p>{result.text}</p>
+                    <p>{playResult.text}</p>
                 </div>
             )
         }
-        if (result.endEvent) setCurrentEvent(null)
+
+        //Report back to the event queue manager
+        if (playResult.endEvent) {
+            setCurrentEvent(null)
+            manageEventQueue(event.id)
+        }
+    }
+
+    /**
+     * Runs every function required to start and continue the game.
+     */
+    function runGame() {
+        manageEventQueue(-1)
+    }
+
+    /**
+     * Takes in the ID of the previous event played and selects the next event to be handled.
+     * Currently only works in sequential order, must be changed later to account for random
+     * events.
+     * @param {number} id The ID of the previous event played.
+     */
+    function manageEventQueue(id) {
+        id++
+        if (id <= events.length) {
+            for (let event of events) {
+                if (event.id === id) {
+                    handleEvent(event)
+                }
+            }
+        } else {
+            console.log(`No more events.`)
+        }
     }
 
     return (
@@ -63,7 +98,7 @@ function GameArea(props) {
                 <Row id="maingame" className='mainpanel'>
                     <Col>
                         <div className='message'>
-                            <Button className='button' variant="outline-primary" onClick={() => { eventHandler(events[0]) }}>Begin</Button>
+                            <Button className='button' variant="outline-primary" onClick={() => { runGame() }}>Begin</Button>
                         </div>
                         {displayedMessages}
                     </Col>
