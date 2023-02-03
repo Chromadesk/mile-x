@@ -17,6 +17,7 @@ function GameArea(props) {
             </div>
         )
     })
+    console.log(displayedMessages)
 
     /**
      * Takes in an event and continually runs itself to process an event until the event is over.
@@ -35,6 +36,7 @@ function GameArea(props) {
 
         //Use the event's .play function and format the returned object.
         let playResult = event.play(vars)
+        let buttons;
 
         if (playResult.buttons !== null) {
             let buttonContent = playResult.buttons.map((text, i) => {
@@ -43,24 +45,19 @@ function GameArea(props) {
                 )
             }
             )
-            setMessages(
-                <div>
-                    <p>{playResult.text}</p>
-                    <ButtonGroup>
-                        {buttonContent}
-                    </ButtonGroup>
-                </div>
-            )
-        } else {
-            setMessages(
-                <div>
-                    <p>{playResult.text}</p>
-                </div>
-            )
+            buttons = (<ButtonGroup>{buttonContent}</ButtonGroup>)
         }
+        console.log(playResult.text)
+        setMessages(
+            <div>
+                <p>{playResult.text}</p>
+                <div>{buttons}</div>
+            </div>
+        )
 
         //Report back to the event queue manager
         if (playResult.endEvent) {
+            console.log("end event")
             setCurrentEvent(null)
             manageEventQueue(event.id)
         }

@@ -105,6 +105,7 @@ class App extends Component {
     const { messages } = this.state
     let newState = messages.concat(newMessage)
     this.setState({ messages: [newState] })
+    console.log("setMessages: " + messages)
   }
 
   setCurrentEvent = (newEvent) => {
