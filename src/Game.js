@@ -9,25 +9,12 @@ function GameArea(props) {
     let getCurrentEvent = props.getCurrentEvent
     let events = getEvents()
 
-
-    let displayedMessages = props.messages.map((message, i) => {
-        return (
-            <div key={i} className="message">
-                {message}
-            </div>
-        )
-    })
-    console.log(displayedMessages)
-
     /**
      * Takes in an event and continually runs itself to process an event until the event is over.
      * @param {Object} event An event to be played
      * @param {Array} vars Not required. The variables of the event.
      */
     function handleEvent(event, vars) {
-        //Set the current event in the state to the parameter event.
-        setCurrentEvent(event)
-
         //Disable all pre-existing buttons
         let oldButtons = document.getElementsByClassName("button")
         for (let oldButton of oldButtons) {
@@ -38,6 +25,13 @@ function GameArea(props) {
         let playResult = event.play(vars)
         let buttons;
 
+        event.active = true
+        console.log("end event? " + playResult.endEvent)
+        console.log("event active? " + event.active)
+        if (playResult.endEvent) { event.active = false }
+        //Set the current event in the state to the parameter event.
+        setCurrentEvent(event)
+
         if (playResult.buttons !== null) {
             let buttonContent = playResult.buttons.map((text, i) => {
                 return (
@@ -47,47 +41,55 @@ function GameArea(props) {
             )
             buttons = (<ButtonGroup>{buttonContent}</ButtonGroup>)
         }
-        console.log(playResult.text)
         setMessages(
             <div>
                 <p>{playResult.text}</p>
                 <div>{buttons}</div>
             </div>
         )
-
-        //Report back to the event queue manager
-        if (playResult.endEvent) {
-            console.log("end event")
-            setCurrentEvent(null)
-            manageEventQueue(event.id)
-        }
     }
 
     /**
      * Runs every function required to start and continue the game.
      */
     function runGame() {
-        manageEventQueue(-1)
+        handleEvent(events[0])
+
     }
 
     /**
-     * Takes in the ID of the previous event played and selects the next event to be handled.
-     * Currently only works in sequential order, must be changed later to account for random
-     * events.
-     * @param {number} id The ID of the previous event played.
+     * Takes in an event. If the event's active parameter is false, automatically starts the
+     * next event with handleEvent(). If there are no other events, or the current event is
+     * marked as active, does nothing.
+     * @param {object} event The ID of the previous event played.
      */
-    function manageEventQueue(id) {
-        id++
-        if (id <= events.length) {
-            for (let event of events) {
-                if (event.id === id) {
-                    handleEvent(event)
+    function manageEventQueue(event) {
+        if (event !== undefined && event !== null) {
+            console.log("manageEventQueue " + event.active)
+            if (event.active === false) {
+                let nextId = event.id + 1
+                if (nextId <= events.length) {
+                    for (let event of events) {
+                        if (event.id === nextId) {
+                            handleEvent(event)
+                        }
+                    }
+                } else {
+                    console.log(`No more events.`)
                 }
             }
-        } else {
-            console.log(`No more events.`)
         }
+
     }
+
+    let displayedMessages = props.messages.map((message, i) => {
+        return (
+            <div key={i} className="message">
+                {message}
+            </div>
+        )
+    })
+    manageEventQueue(getCurrentEvent())
 
     return (
         <Col style={{ padding: '0px' }}>

@@ -6,7 +6,6 @@ const events = [
          * unique: Boolean to decide if event occurs repeatedly or not
          * play: Function(vars), what the event actually does. Runs repeatedly until returns "endEvent" as true.
          */
-        id: -1,
         name: "Button Test",
         unique: true,
         play: (vars) => {
@@ -33,7 +32,6 @@ const events = [
         }
     },
     {
-        id: -1,
         name: "Button Test 2",
         unique: true,
         play: (vars) => {
@@ -70,6 +68,7 @@ const events = [
 function getEvents() {
     return events.map((event, i) => {
         event.id = i
+        event.active = false
         return event
     })
 }

@@ -97,7 +97,8 @@ function InfoPanel() {
 class App extends Component {
   state = {
     messages: [],
-    currentEvent: null
+    currentEvent: null,
+    currentEventActive: false
   }
 
   //oh my god it works. it works. it now works. after 5 million years it works. i cant believe this. It Works.
@@ -105,15 +106,19 @@ class App extends Component {
     const { messages } = this.state
     let newState = messages.concat(newMessage)
     this.setState({ messages: [newState] })
-    console.log("setMessages: " + messages)
   }
 
   setCurrentEvent = (newEvent) => {
-    this.setState({ currentEvent: newEvent })
+    this.setState({
+      currentEvent: newEvent,
+      currentEventActive: newEvent.active
+    })
   }
 
   getCurrentEvent = () => {
-    return this.state.currentEvent
+    let event = this.state.currentEvent
+    if (event !== null) { event.active = this.state.currentEventActive }
+    return event
   }
 
   render() {
