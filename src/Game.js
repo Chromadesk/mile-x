@@ -1,7 +1,7 @@
 import { Container, Row, Col, Button, ButtonGroup } from 'react-bootstrap'
 import { ViewPanel } from './App'
 import getEvents from './Events'
-import { generateMap, getAtXY } from './MapControl'
+import { generateMap, getAtXY } from './mapcontrol'
 
 function GameArea(props) {
     //Get all of the props functions and set them as variables.
