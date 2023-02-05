@@ -1,6 +1,7 @@
 import { Container, Row, Col, Button, ButtonGroup } from 'react-bootstrap'
 import { ViewPanel } from './App'
 import getEvents from './Events'
+import { generateMap, getAtXY } from './MapControl'
 
 function GameArea(props) {
     //Get all of the props functions and set them as variables.
@@ -26,8 +27,6 @@ function GameArea(props) {
         let buttons;
 
         event.active = true
-        console.log("end event? " + playResult.endEvent)
-        console.log("event active? " + event.active)
         if (playResult.endEvent) { event.active = false }
         //Set the current event in the state to the parameter event.
         setCurrentEvent(event)
@@ -54,7 +53,8 @@ function GameArea(props) {
      */
     function runGame() {
         handleEvent(events[0])
-
+        console.log(generateMap(10))
+        console.log(getAtXY(4, 6))
     }
 
     /**
@@ -65,7 +65,6 @@ function GameArea(props) {
      */
     function manageEventQueue(event) {
         if (event !== undefined && event !== null) {
-            console.log("manageEventQueue " + event.active)
             if (event.active === false) {
                 let nextId = event.id + 1
                 if (nextId <= events.length) {

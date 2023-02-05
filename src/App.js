@@ -101,7 +101,6 @@ class App extends Component {
     currentEventActive: false
   }
 
-  //oh my god it works. it works. it now works. after 5 million years it works. i cant believe this. It Works.
   setMessages = (newMessage) => {
     const { messages } = this.state
     let newState = messages.concat(newMessage)
