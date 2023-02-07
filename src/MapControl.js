@@ -83,7 +83,6 @@ function generateRoad(maxLocations) {
     let road = []
     while (road.length < maxLocations) {
         let i = allLocations[Math.round(Math.random() * (allLocations.length - 1))]
-        console.log(i)
         if (i.rarity >= Math.round(Math.random() * 100)) {
             road.push(i)
         }

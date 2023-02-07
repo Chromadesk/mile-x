@@ -2,6 +2,7 @@ import { Container, Row, Col, Button, ButtonGroup } from 'react-bootstrap'
 import { ViewPanel } from './App'
 import getEvents from './Events'
 import { generateMap, getAtXY } from './mapcontrol'
+import gameContextObject from './gamecontrol'
 
 function GameArea(props) {
     //Get all of the props functions and set them as variables.
@@ -28,8 +29,12 @@ function GameArea(props) {
 
         event.active = true
         if (playResult.endEvent) { event.active = false }
+
         //Set the current event in the state to the parameter event.
         setCurrentEvent(event)
+        if (playResult.effect !== null) {
+            playResult.effect()
+        }
 
         if (playResult.buttons !== null) {
             let buttonContent = playResult.buttons.map((text, i) => {

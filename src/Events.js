@@ -6,59 +6,25 @@ const events = [
          * unique: Boolean to decide if event occurs repeatedly or not
          * play: Function(vars), what the event actually does. Runs repeatedly until returns "endEvent" as true.
          */
-        name: "Button Test",
-        unique: true,
-        play: (vars) => {
+        name: "locationmovement",
+        unique: false,
+        play: (context, vars) => {
             switch (vars) {
                 default:
                     return ({
-                        text: "Choose A or B",
-                        buttons: ["Option A", "Option B"],
-                        endEvent: false
+                        text: "You are currently on a road with the following locations. Where do you want to go?",
+                        buttons: ["North", "South", "East", "West", ...context.playerLocal],
+                        endEvent: false,
+                        effect: null
                     })
                 case 0:
                     return ({
-                        text: "You have chosen A",
+                        text: "You move North.",
                         buttons: null,
-                        endEvent: true
-                    })
-                case 1:
-                    return ({
-                        text: "You have chosen B",
-                        buttons: null,
-                        endEvent: true
-                    })
-            }
-        }
-    },
-    {
-        name: "Button Test 2",
-        unique: true,
-        play: (vars) => {
-            switch (vars) {
-                default:
-                    return ({
-                        text: "Confirm that you see this prompt.",
-                        buttons: ["I see it", "I cannot see the prompt", "No"],
-                        endEvent: false
-                    })
-                case 0:
-                    return ({
-                        text: "Great",
-                        buttons: null,
-                        endEvent: true
-                    })
-                case 1:
-                    return ({
-                        text: "skill issue",
-                        buttons: null,
-                        endEvent: true
-                    })
-                case 2:
-                    return ({
-                        text: "Ok",
-                        buttons: null,
-                        endEvent: true
+                        endEvent: true,
+                        effect: () => {
+                            context.playerPos.y
+                        }
                     })
             }
         }
