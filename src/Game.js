@@ -1,7 +1,7 @@
 import { Container, Row, Col, Button, ButtonGroup } from 'react-bootstrap'
 import { ViewPanel } from './App'
 import getEvents from './Events'
-import { generateMap, getAtXY } from './mapcontrol'
+import { generateMap } from './mapcontrol'
 import gameContextObject from './gamecontrol'
 
 function GameArea(props) {
@@ -24,7 +24,7 @@ function GameArea(props) {
         }
 
         //Use the event's .play function and format the returned object.
-        let playResult = event.play(vars)
+        let playResult = event.play(gameContextObject, vars)
         let buttons;
 
         event.active = true
@@ -58,8 +58,8 @@ function GameArea(props) {
      */
     function runGame() {
         handleEvent(events[0])
-        console.log(generateMap(10))
-        console.log(getAtXY(4, 6))
+        console.log(generateMap(100))
+
     }
 
     /**

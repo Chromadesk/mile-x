@@ -1,3 +1,4 @@
+import gameContextObject from "./gamecontrol"
 const map = []
 
 class Location {
@@ -90,6 +91,12 @@ function generateRoad(maxLocations) {
     return road
 }
 
+export function movePlayerToLocation(x, y) {
+    gameContextObject.playerLocal = getAtXY(x, y)
+    gameContextObject.playerPos = [x, y]
+    console.log(gameContextObject.playerPos)
+}
+
 export function generateMap(size) {
     while (map.length < size) {
         let yAxis = []
@@ -100,10 +107,10 @@ export function generateMap(size) {
         map.push(yAxisCopy)
         yAxis.length = 0
     }
+    movePlayerToLocation(Math.round(size / 2), Math.round(size / 2))
     return map
 }
 
 export function getAtXY(x, y) {
-    console.log(`X: ${x}, Y: ${y}`)
     return map[x][y]
 }
