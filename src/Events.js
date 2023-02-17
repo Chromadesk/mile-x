@@ -14,7 +14,7 @@ const events = [
         play: (context, vars) => {
             if (vars === context.roadSize) {
                 return ({
-                    text: "",
+                    text: "You choose to continue moving.",
                     buttons: null,
                     endEvent: true,
                     nextEvent: "directionalMovement",
@@ -35,7 +35,41 @@ const events = [
             }
             return ({
                 text: `You are on a road. Where do you go next?`,
-                buttons: [...context.getPlayerPointNames(), "Leave Road"],
+                buttons: [...getNamesFromArray(context.playerPoint), "Leave Road"],
+                endEvent: false,
+                nextEvent: null,
+                effect: null
+            })
+        }
+    },
+    {
+        name: "subLocationMovement",
+        unique: false,
+        play: (context, vars) => {
+            if (vars === context.playerLocal.subLocations.length) {
+                return ({
+                    text: "You go outside.",
+                    buttons: null,
+                    endEvent: true,
+                    nextEvent: "locationMovement",
+                    effect: null
+                })
+            }
+            if (vars >= 0) {
+                return ({
+                    text: "",
+                    buttons: null,
+                    endEvent: true,
+                    nextEvent: "subLocationInteraction",
+                    effect: () => {
+                        context.playerSubLocal = context.playerLocal.subLocations[vars]
+                        console.log(context.playerSubLocal)
+                    }
+                })
+            }
+            return ({
+                text: "Where to go?",
+                buttons: [...getNamesFromArray(context.playerLocal.subLocations), `Leave ${context.playerLocal.name}`],
                 endEvent: false,
                 nextEvent: null,
                 effect: null
@@ -49,7 +83,7 @@ const events = [
             switch (vars) {
                 default:
                     return ({
-                        text: "Choose",
+                        text: "Which direction do you want to head?",
                         buttons: ["North", "South", "East", "West"],
                         endEvent: false,
                         nextEvent: null,
@@ -123,7 +157,16 @@ export function getEventByName(name) {
             return event
         }
     }
+    console.log('Event "' + name + '" not found.')
     return null
+}
+
+export function getNamesFromArray(array) {
+    let names = [];
+    for (let location of array) {
+        names.push(location.name)
+    }
+    return names
 }
 
 export default getEvents
