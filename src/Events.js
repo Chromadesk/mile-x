@@ -9,7 +9,7 @@ import { movePlayerToPoint } from "./mapcontrol"
 const events = [
     {
         //Read carefully, this does not use a switch case.
-        name: "locationmovement",
+        name: "locationMovement",
         unique: false,
         play: (context, vars) => {
             if (vars === context.roadSize) {
@@ -17,8 +17,20 @@ const events = [
                     text: "",
                     buttons: null,
                     endEvent: true,
-                    nextEvent: "directionalmovement",
+                    nextEvent: "directionalMovement",
                     effect: null
+                })
+            }
+            if (vars >= 0) {
+                return ({
+                    text: `You enter the ${context.playerPoint[vars].name}.`,
+                    buttons: null,
+                    endEvent: true,
+                    nextEvent: "subLocationMovement",
+                    effect: () => {
+                        context.playerLocal = context.playerPoint[vars]
+                        console.log(context.playerLocal)
+                    }
                 })
             }
             return ({
@@ -31,7 +43,7 @@ const events = [
         }
     },
     {
-        name: "directionalmovement",
+        name: "directionalMovement",
         unique: false,
         play: (context, vars) => {
             switch (vars) {
@@ -48,7 +60,7 @@ const events = [
                         text: "You move North.",
                         buttons: null,
                         endEvent: true,
-                        nextEvent: null,
+                        nextEvent: "locationMovement",
                         effect: () => {
                             movePlayerToPoint(context.playerPos[0], context.playerPos[1] + 1)
                         }
@@ -58,7 +70,7 @@ const events = [
                         text: "You move South.",
                         buttons: null,
                         endEvent: true,
-                        nextEvent: null,
+                        nextEvent: "locationMovement",
                         effect: () => {
                             movePlayerToPoint(context.playerPos[0], context.playerPos[1] - 1)
                         }
@@ -68,6 +80,7 @@ const events = [
                         text: "You move East.",
                         buttons: null,
                         endEvent: true,
+                        nextEvent: "locationMovement",
                         effect: () => {
                             movePlayerToPoint(context.playerPos[0] + 1, context.playerPos[1])
                         }
@@ -77,7 +90,7 @@ const events = [
                         text: "You move West.",
                         buttons: null,
                         endEvent: true,
-                        nextEvent: null,
+                        nextEvent: "locationMovement",
                         effect: () => {
                             movePlayerToPoint(context.playerPos[0] - 1, context.playerPos[1])
                         }

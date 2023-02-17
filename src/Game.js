@@ -17,20 +17,15 @@ function GameArea(props) {
      * @param {Array} vars Not required. The variables of the event.
      */
     function handleEvent(event, vars) {
-        //Disable all pre-existing buttons
-        let oldButtons = document.getElementsByClassName("button")
-        for (let oldButton of oldButtons) {
-            oldButton.className = "disabled button btn btn-outline-primary"
-        }
+        //Disable all pre-existing buttons (non functional)
+        // let oldButtons = document.getElementsByClassName("button")
+        // for (let oldButton of oldButtons) {
+        //     oldButton.className = "disabled button btn btn-outline-primary"
+        // }
 
         //Use the event's .play function and format the returned object.
         let playResult = event.play(gameContextObject, vars)
         let buttons;
-
-        if (playResult.nextEvent !== null) {
-            console.log("Switching to event " + playResult.nextEvent)
-            return handleEvent(getEventByName(playResult.nextEvent))
-        }
 
         event.active = true
         if (playResult.endEvent) { event.active = false }
@@ -56,6 +51,10 @@ function GameArea(props) {
                 <div>{buttons}</div>
             </div>
         )
+        if (playResult.nextEvent !== null) {
+            console.log("Switching to event " + playResult.nextEvent)
+            return handleEvent(getEventByName(playResult.nextEvent))
+        }
     }
 
     /**
