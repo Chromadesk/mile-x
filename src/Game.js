@@ -1,6 +1,6 @@
 import { Container, Row, Col, Button, ButtonGroup } from 'react-bootstrap'
 import { ViewPanel } from './App'
-import getEvents from './Events'
+import { getEvents, getEventByName } from './Events'
 import { generateMap } from './mapcontrol'
 import gameContextObject from './gamecontrol'
 
@@ -26,6 +26,11 @@ function GameArea(props) {
         //Use the event's .play function and format the returned object.
         let playResult = event.play(gameContextObject, vars)
         let buttons;
+
+        if (playResult.nextEvent !== null) {
+            console.log("Switching to event " + playResult.nextEvent)
+            return handleEvent(getEventByName(playResult.nextEvent))
+        }
 
         event.active = true
         if (playResult.endEvent) { event.active = false }
@@ -57,9 +62,8 @@ function GameArea(props) {
      * Runs every function required to start and continue the game.
      */
     function runGame() {
-        handleEvent(events[0])
         console.log(generateMap(100))
-
+        handleEvent(events[0])
     }
 
     /**

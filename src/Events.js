@@ -1,4 +1,4 @@
-import { movePlayerToLocation } from "./mapcontrol"
+import { movePlayerToPoint } from "./mapcontrol"
 
 /**
  * id: Not to be included, will be automatically set.
@@ -7,6 +7,29 @@ import { movePlayerToLocation } from "./mapcontrol"
  * play: Function(vars), what the event actually does. Runs repeatedly until returns "endEvent" as true.
  */
 const events = [
+    {
+        //Read carefully, this does not use a switch case.
+        name: "locationmovement",
+        unique: false,
+        play: (context, vars) => {
+            if (vars === context.roadSize) {
+                return ({
+                    text: "",
+                    buttons: null,
+                    endEvent: true,
+                    nextEvent: "directionalmovement",
+                    effect: null
+                })
+            }
+            return ({
+                text: `You are on a road. Where do you go next?`,
+                buttons: [...context.getPlayerPointNames(), "Leave Road"],
+                endEvent: false,
+                nextEvent: null,
+                effect: null
+            })
+        }
+    },
     {
         name: "directionalmovement",
         unique: false,
@@ -17,6 +40,7 @@ const events = [
                         text: "Choose",
                         buttons: ["North", "South", "East", "West"],
                         endEvent: false,
+                        nextEvent: null,
                         effect: null
                     })
                 case 0:
@@ -24,8 +48,9 @@ const events = [
                         text: "You move North.",
                         buttons: null,
                         endEvent: true,
+                        nextEvent: null,
                         effect: () => {
-                            movePlayerToLocation(context.playerPos[0], context.playerPos[1] + 1)
+                            movePlayerToPoint(context.playerPos[0], context.playerPos[1] + 1)
                         }
                     })
                 case 1:
@@ -33,8 +58,9 @@ const events = [
                         text: "You move South.",
                         buttons: null,
                         endEvent: true,
+                        nextEvent: null,
                         effect: () => {
-                            movePlayerToLocation(context.playerPos[0], context.playerPos[1] - 1)
+                            movePlayerToPoint(context.playerPos[0], context.playerPos[1] - 1)
                         }
                     })
                 case 2:
@@ -43,7 +69,7 @@ const events = [
                         buttons: null,
                         endEvent: true,
                         effect: () => {
-                            movePlayerToLocation(context.playerPos[0] + 1, context.playerPos[1])
+                            movePlayerToPoint(context.playerPos[0] + 1, context.playerPos[1])
                         }
                     })
                 case 3:
@@ -51,8 +77,9 @@ const events = [
                         text: "You move West.",
                         buttons: null,
                         endEvent: true,
+                        nextEvent: null,
                         effect: () => {
-                            movePlayerToLocation(context.playerPos[0] - 1, context.playerPos[1])
+                            movePlayerToPoint(context.playerPos[0] - 1, context.playerPos[1])
                         }
                     })
             }
@@ -60,12 +87,30 @@ const events = [
     },
 ]
 
-function getEvents() {
+/**
+ * Creates an copy of all of all events, ready for usage.
+ * @returns All events, with added ids and active statuses.
+ */
+export function getEvents() {
     return events.map((event, i) => {
         event.id = i
         event.active = false
         return event
     })
+}
+
+/**
+ * Gets an event from the events array via searching for it by name.
+ * @param {string} name The name of the event to get.
+ * @returns an Event object, if found. If not found, Null.
+ */
+export function getEventByName(name) {
+    for (let event of events) {
+        if (event.name === name) {
+            return event
+        }
+    }
+    return null
 }
 
 export default getEvents
