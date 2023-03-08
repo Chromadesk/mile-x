@@ -12,49 +12,71 @@ function GameArea(props) {
     let events = initializeEvents()
 
     /**
+     * Sets the current event and marks event as active or inactive.
+     * @param {Object} event An event object
+     * @param {Object} playResult The result of using .play on the event.
+     */
+    function registerEventActivity(event, playResult) {
+        event.active = true
+        if (playResult.endEvent) { event.active = false }
+
+        setCurrentEvent(event, playResult)
+        if (playResult.effect !== null) {
+            playResult.effect()
+        }
+    }
+
+    /**
+     * If event has buttons, creates a ButtonGroup JSX element with all buttons.
+     * @param {Object} event An event object
+     * @param {Object} playResult The result of using .play on the event.
+     * @returns A JSX element of a ButtonGroup
+     */
+    function createButtonGroup(event, playResult) {
+        let buttonContent = playResult.buttons.map((text, i) => {
+            return (
+                <Button className='button' variant="outline-primary" key={i} onClick={() => { handleEvent(event, i) }}>{text}</Button>
+            )
+        }
+        )
+        return (<ButtonGroup>{buttonContent}</ButtonGroup>)
+    }
+
+    /**
+     * Switches to next event when events are chained together.
+     * @param {Object} playResult The result of using .play on the event.
+     */
+    function playNextEvent(playResult) {
+        if (playResult.nextEvent !== null) {
+            console.log("Switching to event " + playResult.nextEvent.name)
+            handleEvent(playResult.nextEvent)
+        }
+    }
+
+    /**
      * Takes in an event and continually runs itself to process an event until the event is over.
      * @param {Object} event An event to be played
      * @param {Array} vars Not required. The variables of the event.
      */
     function handleEvent(event, vars) {
-        //Disable all pre-existing buttons (non functional)
-        // let oldButtons = document.getElementsByClassName("button")
-        // for (let oldButton of oldButtons) {
-        //     oldButton.className = "disabled button btn btn-outline-primary"
-        // }
-
         //Use the event's .play function and format the returned object.
         let playResult = event.play(gameContextObject, vars)
         let buttons;
 
-        event.active = true
-        if (playResult.endEvent) { event.active = false }
-
-        //Set the current event in the state to the parameter event.
-        setCurrentEvent(event)
-        if (playResult.effect !== null) {
-            playResult.effect()
-        }
+        registerEventActivity(event, playResult)
 
         if (playResult.buttons !== null) {
-            let buttonContent = playResult.buttons.map((text, i) => {
-                return (
-                    <Button className='button' variant="outline-primary" key={i} onClick={() => { handleEvent(event, i) }}>{text}</Button>
-                )
-            }
-            )
-            buttons = (<ButtonGroup>{buttonContent}</ButtonGroup>)
+            buttons = createButtonGroup(event, playResult)
         }
+
         setMessages(
             <div>
                 <p>{playResult.text}</p>
                 <div>{buttons}</div>
             </div>
         )
-        if (playResult.nextEvent !== null) {
-            console.log("Switching to event " + playResult.nextEvent.name)
-            return handleEvent(playResult.nextEvent)
-        }
+
+        playNextEvent(playResult)
     }
 
     /**
@@ -66,10 +88,12 @@ function GameArea(props) {
     }
 
     /**
-     * Takes in an event. If the event's active parameter is false, automatically starts the
-     * next event with handleEvent(). If there are no other events, or the current event is
-     * marked as active, does nothing.
-     * @param {object} event The ID of the previous event played.
+     * TODO - Must be remade to make events play differently, using eventLocationMovement as
+     * the default event but having a chance to randomly play an event, or contextually play an event,
+     * interrupting the event chain.
+     * 
+     * Plays the next event according to the sequence of the events array.
+     * @param {Object} event The previous event played.
      */
     function manageEventQueue(event) {
         if (event !== undefined && event !== null) {
@@ -86,7 +110,6 @@ function GameArea(props) {
                 }
             }
         }
-
     }
 
     let displayedMessages = props.messages.map((message, i) => {
