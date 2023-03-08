@@ -1,7 +1,8 @@
 import { movePlayerToPoint } from "../mapcontrol"
+import eventLocationMovement from "./eventLocationMovement"
 
 const eventDirectionalMovement = {
-    name: "directionalMovement",
+    name: "eventDirectionalMovement",
     unique: false,
     play: (context, vars) => {
         switch (vars) {
@@ -18,7 +19,7 @@ const eventDirectionalMovement = {
                     text: "You move North.",
                     buttons: null,
                     endEvent: true,
-                    nextEvent: "locationMovement",
+                    nextEvent: eventLocationMovement,
                     effect: () => {
                         movePlayerToPoint(context.playerPos[0], context.playerPos[1] + 1)
                     }
@@ -28,7 +29,7 @@ const eventDirectionalMovement = {
                     text: "You move South.",
                     buttons: null,
                     endEvent: true,
-                    nextEvent: "locationMovement",
+                    nextEvent: eventLocationMovement,
                     effect: () => {
                         movePlayerToPoint(context.playerPos[0], context.playerPos[1] - 1)
                     }
@@ -38,7 +39,7 @@ const eventDirectionalMovement = {
                     text: "You move East.",
                     buttons: null,
                     endEvent: true,
-                    nextEvent: "locationMovement",
+                    nextEvent: eventLocationMovement,
                     effect: () => {
                         movePlayerToPoint(context.playerPos[0] + 1, context.playerPos[1])
                     }
@@ -48,7 +49,7 @@ const eventDirectionalMovement = {
                     text: "You move West.",
                     buttons: null,
                     endEvent: true,
-                    nextEvent: "locationMovement",
+                    nextEvent: eventLocationMovement,
                     effect: () => {
                         movePlayerToPoint(context.playerPos[0] - 1, context.playerPos[1])
                     }

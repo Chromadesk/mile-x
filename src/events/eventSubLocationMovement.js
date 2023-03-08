@@ -1,7 +1,8 @@
 import { getNamesFromArray } from "../Events"
+import eventLocationMovement from "./eventLocationMovement"
 
 const eventSubLocationMovement = {
-    name: "subLocationMovement",
+    name: "eventSubLocationMovement",
     unique: false,
     play: (context, vars) => {
         if (vars === context.playerLocal.subLocations.length) {
@@ -9,7 +10,7 @@ const eventSubLocationMovement = {
                 text: "You go outside.",
                 buttons: null,
                 endEvent: true,
-                nextEvent: "locationMovement",
+                nextEvent: eventLocationMovement,
                 effect: null
             })
         }

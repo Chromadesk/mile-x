@@ -1,7 +1,9 @@
 import { getNamesFromArray } from "../Events"
+import eventDirectionalMovement from "./eventDirectionalMovement"
+import eventSubLocationMovement from "./eventSubLocationMovement"
 
 const eventLocationMovement = {
-    name: "locationMovement",
+    name: "eventLocationMovement",
     unique: false,
     play: (context, vars) => {
         if (vars === context.roadSize) {
@@ -9,7 +11,7 @@ const eventLocationMovement = {
                 text: "You choose to continue moving.",
                 buttons: null,
                 endEvent: true,
-                nextEvent: "directionalMovement",
+                nextEvent: eventDirectionalMovement,
                 effect: null
             })
         }
@@ -18,7 +20,7 @@ const eventLocationMovement = {
                 text: `You enter the ${context.playerPoint[vars].name}.`,
                 buttons: null,
                 endEvent: true,
-                nextEvent: "subLocationMovement",
+                nextEvent: eventSubLocationMovement,
                 effect: () => {
                     context.playerLocal = context.playerPoint[vars]
                     console.log(context.playerLocal)

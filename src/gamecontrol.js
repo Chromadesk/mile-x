@@ -3,13 +3,6 @@ const gameContextObject = {
     playerPoint: null,
     playerLocal: null,
     playerSubLocal: null,
-    getPlayerPointNames() {
-        let names = [];
-        for (let location of this.playerPoint) {
-            names.push(location.name)
-        }
-        return names
-    },
     map: [],
     mapSize: null,
     roadSize: null,

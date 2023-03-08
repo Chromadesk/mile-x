@@ -1,6 +1,6 @@
 import { Container, Row, Col, Button, ButtonGroup } from 'react-bootstrap'
 import { ViewPanel } from './App'
-import { getEvents, getEventByName } from './Events'
+import { getEventByName, initializeEvents } from './Events'
 import { generateMap } from './mapcontrol'
 import gameContextObject from './gamecontrol'
 
@@ -9,7 +9,7 @@ function GameArea(props) {
     let setMessages = props.setMessages
     let setCurrentEvent = props.setCurrentEvent
     let getCurrentEvent = props.getCurrentEvent
-    let events = getEvents()
+    let events = initializeEvents()
 
     /**
      * Takes in an event and continually runs itself to process an event until the event is over.
@@ -52,8 +52,8 @@ function GameArea(props) {
             </div>
         )
         if (playResult.nextEvent !== null) {
-            console.log("Switching to event " + playResult.nextEvent)
-            return handleEvent(getEventByName(playResult.nextEvent))
+            console.log("Switching to event " + playResult.nextEvent.name)
+            return handleEvent(playResult.nextEvent)
         }
     }
 
