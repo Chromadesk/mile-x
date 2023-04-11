@@ -8,18 +8,14 @@ const events = [
     eventSubLocationMovement
 ]
 
-let eventsInitialized = false;
-
 /**
  * Creates an copy of all of all events, ready for usage.
  * @returns All events, with added ids and active statuses.
  */
 export function initializeEvents() {
-    if (eventsInitialized) console.log("ERROR - initializeEvents() can only be used once.")
     return events.map((event, i) => {
         event.id = i
         event.active = false
-        eventsInitialized = true
         return event
     })
 }

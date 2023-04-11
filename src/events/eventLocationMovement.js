@@ -6,7 +6,7 @@ const eventLocationMovement = {
     name: "eventLocationMovement",
     unique: false,
     play: (context, vars) => {
-        if (vars === context.roadSize) {
+        if (vars === context.pointSize) {
             return ({
                 text: "You choose to continue moving.",
                 buttons: null,
@@ -29,7 +29,7 @@ const eventLocationMovement = {
         }
         return ({
             text: `You are on a road. Where do you go next?`,
-            buttons: [...getNamesFromArray(context.playerPoint), "Leave Road"],
+            buttons: [...getNamesFromArray(context.playerPoint.locations), "Leave Road"],
             endEvent: false,
             nextEvent: null,
             effect: null

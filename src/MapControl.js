@@ -1,4 +1,5 @@
 import gameContextObject from "./gamecontrol"
+import { Zombie } from "./zombiecontrol"
 
 class Location {
     constructor(name, rarity, isIndoor, subLocations) {
@@ -6,6 +7,7 @@ class Location {
         this.rarity = rarity
         this.isIndoor = isIndoor
         this.subLocations = subLocations
+        gameContextObject.register(this)
     }
 }
 class SubLocation {
@@ -14,6 +16,18 @@ class SubLocation {
         this.items = null
         this.lockChance = lockChance
         this.loot = []
+        gameContextObject.register(this)
+    }
+}
+
+class PointData {
+    cords = null
+    locations = []
+    NPCs = []
+    zoning = null //future
+
+    constructor() {
+        gameContextObject.register(this)
     }
 }
 
@@ -79,34 +93,62 @@ let allLocations = [
     storeGun, storeTool, storeMechanic, storeCar, office, apartmentBuilding,
     doctorOffice, policeStation, warehouse, park, forest, parkingLot]
 
-function generateRoad(maxLocations) {
-    let road = []
-    while (road.length < maxLocations) {
+function generatePoint(maxLocations) {
+    let point = new PointData()
+    while (point.length < maxLocations) {
         let i = allLocations[Math.round(Math.random() * (allLocations.length - 1))]
         if (i.rarity >= Math.round(Math.random() * 100)) {
-            road.push(i)
+            point.locations.push(i)
         }
     }
-    gameContextObject.roadSize = maxLocations;
-    return road
+    gameContextObject.pointSize = maxLocations;
+    return point
+}
+
+function spawnZombiesAtPoint(limit, point) {
+    let quantity = Math.round(Math.random * limit)
+    while (point.NPCs < quantity) {
+        let zombie = new Zombie(point.cords, point)
+        point.NPCs += zombie
+    }
 }
 
 export function movePlayerToPoint(x, y) {
     gameContextObject.playerPoint = getAtXY(x, y)
-    gameContextObject.playerPos = [x, y]
+    gameContextObject.playerCords = [x, y]
+}
+
+function addCoordsToPoints(map) {
+    for (let x = 0; x < map.length; x++) {
+        for (let y = 0; y < map[x].length; y++) {
+            let point = getAtXY(x, y)
+            point.cords = [x, y]
+        }
+    }
+}
+
+function addZombiesToPoints(map) {
+    for (let x = 0; x < map.length; x++) {
+        for (let y = 0; y < map[x].length; y++) {
+            let point = getAtXY(x, y)
+            spawnZombiesAtPoint(gameContextObject.maxZombiesInPoint, point)
+        }
+    }
 }
 
 export function generateMap(size) {
     while (gameContextObject.map.length < size) {
         let yAxis = []
         while (yAxis.length < size) {
-            yAxis.push(generateRoad(5))
+            yAxis.push(generatePoint(5))
         }
         let yAxisCopy = [...yAxis]
         gameContextObject.map.push(yAxisCopy)
         yAxis.length = 0
     }
     movePlayerToPoint(Math.round(size / 2), Math.round(size / 2))
+    addCoordsToPoints(gameContextObject.map)
+    addZombiesToPoints(gameContextObject.map)
     gameContextObject.mapSize = size;
     return gameContextObject.map
 }

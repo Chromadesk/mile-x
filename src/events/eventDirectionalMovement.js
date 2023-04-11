@@ -21,7 +21,7 @@ const eventDirectionalMovement = {
                     endEvent: true,
                     nextEvent: eventLocationMovement,
                     effect: () => {
-                        movePlayerToPoint(context.playerPos[0], context.playerPos[1] + 1)
+                        movePlayerToPoint(context.playerCords[0], context.playerCords[1] + 1)
                     }
                 })
             case 1:
@@ -31,7 +31,7 @@ const eventDirectionalMovement = {
                     endEvent: true,
                     nextEvent: eventLocationMovement,
                     effect: () => {
-                        movePlayerToPoint(context.playerPos[0], context.playerPos[1] - 1)
+                        movePlayerToPoint(context.playerCords[0], context.playerCords[1] - 1)
                     }
                 })
             case 2:
@@ -41,7 +41,7 @@ const eventDirectionalMovement = {
                     endEvent: true,
                     nextEvent: eventLocationMovement,
                     effect: () => {
-                        movePlayerToPoint(context.playerPos[0] + 1, context.playerPos[1])
+                        movePlayerToPoint(context.playerCords[0] + 1, context.playerCords[1])
                     }
                 })
             case 3:
