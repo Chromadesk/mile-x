@@ -51,7 +51,7 @@ const eventDirectionalMovement = {
                     endEvent: true,
                     nextEvent: eventLocationMovement,
                     effect: () => {
-                        movePlayerToPoint(context.playerPos[0] - 1, context.playerPos[1])
+                        movePlayerToPoint(context.playerCords[0] - 1, context.playerCords[1])
                     }
                 })
         }

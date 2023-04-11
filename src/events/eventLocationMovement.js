@@ -17,18 +17,18 @@ const eventLocationMovement = {
         }
         if (vars >= 0) {
             return ({
-                text: `You enter the ${context.playerPoint[vars].name}.`,
+                text: `You enter the ${context.playerPoint.locations[vars].name}.`,
                 buttons: null,
                 endEvent: true,
                 nextEvent: eventSubLocationMovement,
                 effect: () => {
-                    context.playerLocal = context.playerPoint[vars]
+                    context.playerLocal = context.playerPoint.locations[vars]
                     console.log(context.playerLocal)
                 }
             })
         }
         return ({
-            text: `You are on a road. Where do you go next?`,
+            text: `You are on a road. There are ${context.playerPoint.NPCs.length} zombies here. Where do you go next?`,
             buttons: [...getNamesFromArray(context.playerPoint.locations), "Leave Road"],
             endEvent: false,
             nextEvent: null,

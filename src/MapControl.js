@@ -95,7 +95,7 @@ let allLocations = [
 
 function generatePoint(maxLocations) {
     let point = new PointData()
-    while (point.length < maxLocations) {
+    while (point.locations.length < maxLocations) {
         let i = allLocations[Math.round(Math.random() * (allLocations.length - 1))]
         if (i.rarity >= Math.round(Math.random() * 100)) {
             point.locations.push(i)
@@ -105,11 +105,11 @@ function generatePoint(maxLocations) {
     return point
 }
 
-function spawnZombiesAtPoint(limit, point) {
-    let quantity = Math.round(Math.random * limit)
-    while (point.NPCs < quantity) {
-        let zombie = new Zombie(point.cords, point)
-        point.NPCs += zombie
+function spawnZombiesAtPoint(point) {
+    for (let i = 0; i < gameContextObject.zombieSpawnTries; i++) {
+        if (gameContextObject.zombieSpawnRate >= Math.round(Math.random() * 100)) {
+            point.NPCs.push(new Zombie(point.cords, point))
+        }
     }
 }
 
@@ -131,7 +131,7 @@ function addZombiesToPoints(map) {
     for (let x = 0; x < map.length; x++) {
         for (let y = 0; y < map[x].length; y++) {
             let point = getAtXY(x, y)
-            spawnZombiesAtPoint(gameContextObject.maxZombiesInPoint, point)
+            spawnZombiesAtPoint(point)
         }
     }
 }
