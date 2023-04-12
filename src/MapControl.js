@@ -1,5 +1,6 @@
 import gameContextObject from "./gamecontrol"
-import { Zombie } from "./zombiecontrol"
+import playerObject from "./playercontrol"
+import { NPC } from "./npccontrol"
 
 class Location {
     constructor(name, rarity, isIndoor, subLocations) {
@@ -108,14 +109,30 @@ function generatePoint(maxLocations) {
 function spawnZombiesAtPoint(point) {
     for (let i = 0; i < gameContextObject.zombieSpawnTries; i++) {
         if (gameContextObject.zombieSpawnRate >= Math.round(Math.random() * 100)) {
-            point.NPCs.push(new Zombie(point.cords, point))
+            point.NPCs.push(new NPC("infected", point.cords, point))
         }
     }
 }
 
+/**
+ * Moves the player to an XY position on the grid and passess time while doing so.
+ * @param {number} x The X coordinate on the map grid.
+ * @param {number} y The Y coordinate on the map grid.
+ */
 export function movePlayerToPoint(x, y) {
-    gameContextObject.playerPoint = getAtXY(x, y)
-    gameContextObject.playerCords = [x, y]
+    let point = getAtXY(x, y)
+    playerObject.playerPoint = getAtXY(x, y)
+    playerObject.playerCords = [x, y]
+}
+
+/**
+ * Moves the player to an XY position on the grid without passing time.
+ * @param {number} x The X coordinate on the map grid.
+ * @param {number} y The Y coordinate on the map grid.
+ */
+function teleportPlayerToPoint(x, y) {
+    playerObject.playerPoint = getAtXY(x, y)
+    playerObject.playerCords = [x, y]
 }
 
 function addCoordsToPoints(map) {
@@ -146,7 +163,7 @@ export function generateMap(size) {
         gameContextObject.map.push(yAxisCopy)
         yAxis.length = 0
     }
-    movePlayerToPoint(Math.round(size / 2), Math.round(size / 2))
+    teleportPlayerToPoint(Math.round(size / 2), Math.round(size / 2))
     addCoordsToPoints(gameContextObject.map)
     addZombiesToPoints(gameContextObject.map)
     gameContextObject.mapSize = size;

@@ -5,8 +5,10 @@ const eventDirectionalMovement = {
     name: "eventDirectionalMovement",
     unique: false,
     play: (context, vars) => {
+        const player = context.player
         switch (vars) {
             default:
+                //First Run
                 return ({
                     text: "Which direction do you want to head?",
                     buttons: ["North", "South", "East", "West"],
@@ -14,6 +16,7 @@ const eventDirectionalMovement = {
                     nextEvent: null,
                     effect: null
                 })
+            //Second Run
             case 0:
                 return ({
                     text: "You move North.",
@@ -21,7 +24,7 @@ const eventDirectionalMovement = {
                     endEvent: true,
                     nextEvent: eventLocationMovement,
                     effect: () => {
-                        movePlayerToPoint(context.playerCords[0], context.playerCords[1] + 1)
+                        movePlayerToPoint(player.playerCords[0], player.playerCords[1] + 1)
                     }
                 })
             case 1:
@@ -31,7 +34,7 @@ const eventDirectionalMovement = {
                     endEvent: true,
                     nextEvent: eventLocationMovement,
                     effect: () => {
-                        movePlayerToPoint(context.playerCords[0], context.playerCords[1] - 1)
+                        movePlayerToPoint(player.playerCords[0], player.playerCords[1] - 1)
                     }
                 })
             case 2:
@@ -41,7 +44,7 @@ const eventDirectionalMovement = {
                     endEvent: true,
                     nextEvent: eventLocationMovement,
                     effect: () => {
-                        movePlayerToPoint(context.playerCords[0] + 1, context.playerCords[1])
+                        movePlayerToPoint(player.playerCords[0] + 1, player.playerCords[1])
                     }
                 })
             case 3:
@@ -51,7 +54,7 @@ const eventDirectionalMovement = {
                     endEvent: true,
                     nextEvent: eventLocationMovement,
                     effect: () => {
-                        movePlayerToPoint(context.playerCords[0] - 1, context.playerCords[1])
+                        movePlayerToPoint(player.playerCords[0] - 1, player.playerCords[1])
                     }
                 })
         }
