@@ -144,6 +144,10 @@ function addCoordsToPoints() {
     }
 }
 
+/**
+ * Runs a function on every PointData object on the map grid, inserting the PointData object as a parameter.
+ * @param {Function} func The function to be run.
+ */
 export function runFunctionOnEntireMap(func) {
     for (let x = 0; x < gameContextObject.map.length; x++) {
         for (let y = 0; y < gameContextObject.map[x].length; y++) {
@@ -172,4 +176,12 @@ export function generateMap(size) {
 
 export function getAtXY(x, y) {
     return gameContextObject.map[x][y]
+}
+
+export function moveNPCToCoords(npc, coords) {
+    const oldPoint = getAtXY(...npc.NPCCords)
+    oldPoint.NPCs.splice(oldPoint.NPCs.indexOf(npc), 1)
+    npc.NPCCords = coords
+    console.log(getAtXY(...coords))
+    getAtXY(...npc.NPCCords).NPCs.push(npc)
 }

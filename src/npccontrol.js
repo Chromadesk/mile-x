@@ -1,4 +1,5 @@
 import gameContextObject from "./gamecontrol"
+import { moveNPCToCoords } from "./mapcontrol"
 import playerObject from "./playercontrol"
 
 export class NPC {
@@ -12,6 +13,7 @@ export class NPC {
         this.NPCCords = cords
         this.NPCPoint = point
         gameContextObject.register(this)
+        gameContextObject.allNPCs.push(this)
     }
 
     chasePlayer() {
@@ -19,19 +21,19 @@ export class NPC {
             //X
             if (this.NPCCords[0] !== playerObject.playerCords[0]) {
                 if (playerObject.playerCords[0] - this.NPCCords[0] > 0) {
-                    this.NPCCords[0] += 1
+                    moveNPCToCoords(this, [this.NPCCords[0] + 1, this.NPCCords[1]])
                 }
                 if (playerObject.playerCords[0] - this.NPCCords[0] < 0) {
-                    this.NPCCords[0] -= 1
+                    moveNPCToCoords(this, [this.NPCCords[0] - 1, this.NPCCords[1]])
                 }
             }
             //Y
             if (this.NPCCords[1] !== playerObject.playerCords[1]) {
                 if (playerObject.playerCords[1] - this.NPCCords[1] > 0) {
-                    this.NPCCords[1] += 1
+                    moveNPCToCoords(this, [this.NPCCords[0], this.NPCCords[1] + 1])
                 }
                 if (playerObject.playerCords[1] - this.NPCCords[1] < 0) {
-                    this.NPCCords[1] -= 1
+                    moveNPCToCoords(this, [this.NPCCords[0], this.NPCCords[1] - 1])
                 }
             }
             console.log(`Zombie ${this.id} is chasing the player. Zombie [${this.NPCCords}] Player [${playerObject.playerCords}]`)
