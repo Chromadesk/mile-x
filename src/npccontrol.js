@@ -13,6 +13,30 @@ export class NPC {
         this.NPCPoint = point
         gameContextObject.register(this)
     }
+
+    chasePlayer() {
+        if (this.isActive) {
+            //X
+            if (this.NPCCords[0] !== playerObject.playerCords[0]) {
+                if (playerObject.playerCords[0] - this.NPCCords[0] > 0) {
+                    this.NPCCords[0] += 1
+                }
+                if (playerObject.playerCords[0] - this.NPCCords[0] < 0) {
+                    this.NPCCords[0] -= 1
+                }
+            }
+            //Y
+            if (this.NPCCords[1] !== playerObject.playerCords[1]) {
+                if (playerObject.playerCords[1] - this.NPCCords[1] > 0) {
+                    this.NPCCords[1] += 1
+                }
+                if (playerObject.playerCords[1] - this.NPCCords[1] < 0) {
+                    this.NPCCords[1] -= 1
+                }
+            }
+            console.log(`Zombie ${this.id} is chasing the player. Zombie [${this.NPCCords}] Player [${playerObject.playerCords}]`)
+        }
+    }
 }
 
 /**
@@ -25,6 +49,7 @@ export function didNPCNoticePlayer(NPC) {
         return false
     }
     NPC.isActive = true
+    playerObject.pursuers.push(NPC)
     return true
 }
 

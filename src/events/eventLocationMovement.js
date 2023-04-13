@@ -31,9 +31,13 @@ const eventLocationMovement = {
             })
         }
         //First run
+        let pursuerWarning = ""
+        if (player.pursuers.length > 0) {
+            pursuerWarning = `${player.pursuers.length} zombies are still chasing after you. `
+        }
         if (player.playerPoint.NPCs.length <= 0) {
             return ({
-                text: `You are on a road. Where do you go next?`,
+                text: `You are on a road. ${pursuerWarning}Where do you go next?`,
                 buttons: [...getNamesFromArray(player.playerPoint.locations), "Leave Road"],
                 endEvent: false,
                 nextEvent: null,
@@ -49,7 +53,7 @@ const eventLocationMovement = {
 
             if (npcsActive < 1) {
                 return ({
-                    text: `You are on a road. You see ${player.playerPoint.NPCs.length} zombies here,
+                    text: `You are on a road. ${pursuerWarning}You see ${player.playerPoint.NPCs.length} zombies here,
                     but none have noticed you yet (Stealth ${player.stealth}). What do you do next?`,
                     buttons: [...getNamesFromArray(player.playerPoint.locations), "Leave Road", "Attack Zombies"],
                     endEvent: false,
@@ -58,7 +62,7 @@ const eventLocationMovement = {
                 })
             }
             return ({
-                text: `You are on a road. You see ${player.playerPoint.NPCs.length} zombies here, ${npcsActive}
+                text: `You are on a road. ${pursuerWarning}You see ${player.playerPoint.NPCs.length} zombies here, ${npcsActive}
                 of them are beginning to shamble towards you. What do you do next?`,
                 buttons: [...getNamesFromArray(player.playerPoint.locations), "Run Away", "Attack Zombies"],
                 endEvent: false,

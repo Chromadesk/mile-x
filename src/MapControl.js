@@ -135,20 +135,20 @@ function teleportPlayerToPoint(x, y) {
     playerObject.playerCords = [x, y]
 }
 
-function addCoordsToPoints(map) {
-    for (let x = 0; x < map.length; x++) {
-        for (let y = 0; y < map[x].length; y++) {
+function addCoordsToPoints() {
+    for (let x = 0; x < gameContextObject.map.length; x++) {
+        for (let y = 0; y < gameContextObject.map[x].length; y++) {
             let point = getAtXY(x, y)
             point.cords = [x, y]
         }
     }
 }
 
-function addZombiesToPoints(map) {
-    for (let x = 0; x < map.length; x++) {
-        for (let y = 0; y < map[x].length; y++) {
+export function runFunctionOnEntireMap(func) {
+    for (let x = 0; x < gameContextObject.map.length; x++) {
+        for (let y = 0; y < gameContextObject.map[x].length; y++) {
             let point = getAtXY(x, y)
-            spawnZombiesAtPoint(point)
+            func(point)
         }
     }
 }
@@ -164,8 +164,8 @@ export function generateMap(size) {
         yAxis.length = 0
     }
     teleportPlayerToPoint(Math.round(size / 2), Math.round(size / 2))
-    addCoordsToPoints(gameContextObject.map)
-    addZombiesToPoints(gameContextObject.map)
+    addCoordsToPoints()
+    runFunctionOnEntireMap(spawnZombiesAtPoint)
     gameContextObject.mapSize = size;
     return gameContextObject.map
 }

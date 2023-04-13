@@ -19,12 +19,14 @@ const playerObject = {
     bleed: 0,
     sickness: 0,
 
-    stealth: 50,
+    stealth: 0,
 
     playerCords: [0, 0], //The coordinates of the player on the grid
     playerPoint: null, //The PointData of the player's coordinates
     playerLocal: null, //The location (if any) that the player is inside of
     playerSubLocal: null, //The sublocation (if any) that the player is inside of
+
+    pursuers: []
 }
 
 export default playerObject

@@ -2,7 +2,7 @@ import { Container, Row, Col, Button, ButtonGroup } from 'react-bootstrap'
 import { ViewPanel } from './App'
 import { getEventByName, initializeEvents } from './Events'
 import { generateMap } from './mapcontrol'
-import gameContextObject from './gamecontrol'
+import gameContextObject, { passTime } from './gamecontrol'
 
 function GameArea(props) {
     //Get all of the props functions and set them as variables.
@@ -47,6 +47,7 @@ function GameArea(props) {
      * @param {Object} playResult The result of using .play on the event.
      */
     function playNextEvent(playResult) {
+        passTime()
         if (playResult.nextEvent !== null) {
             console.log("Switching to event " + playResult.nextEvent.name)
             handleEvent(playResult.nextEvent)
@@ -124,7 +125,7 @@ function GameArea(props) {
     return (
         <Col style={{ padding: '0px' }}>
             <Container>
-                <Row id="maingame" className='mainpanel'>
+                <Row id="maingame" className='mainpanel' style={{ overflowY: 'scroll' }}>
                     <Col>
                         <div className='message'>
                             <Button className='button' variant="outline-primary" onClick={() => { runGame() }}>Begin</Button>
